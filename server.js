@@ -7,6 +7,9 @@ let app = express();
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
 
+//
+// Express middleware
+//
 app.use((request, response, next) => {
     let now = new Date().toString();
     let log = `${now}: ${request.method} ${request.url}`;
@@ -21,14 +24,19 @@ app.use((request, response, next) => {
     next();
 });
 
+// Maintenance mode
 // app.use((request, response, next) => {
 //     response.render('maintenance.hbs', {
 //         pageTitle: 'Maintenance'
 //     })
 // });
 
+// Static pages
 app.use(express.static(__dirname + '/public'));
 
+//
+// Express helpers
+//
 hbs.registerHelper('getCurrentYear', () => {
     return new Date().getFullYear();
 });
@@ -37,6 +45,9 @@ hbs.registerHelper('screamIt', (text) => {
     return text.toUpperCase();
 });
 
+//
+// Routes
+//
 app.get('/', (request, response) => {
     response.render('home.hbs', {
         pageTitle: 'Home page',
@@ -56,6 +67,7 @@ app.get('/bad', (request, response) => {
     });
 });
 
+// Start Express
 app.listen(3000, () => {
     console.log('Server is up on port 3000');
 });
